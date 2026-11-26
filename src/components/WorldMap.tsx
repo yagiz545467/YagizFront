@@ -39,7 +39,8 @@ export default function WorldMap({world,players,selected,onSelect,preview=false}
       ctx.beginPath();ctx.rect(x-4,y-4,8,8);ctx.fill();ctx.stroke();
       if(capital){ctx.strokeStyle='#27302a';ctx.beginPath();ctx.moveTo(x-6,y-9);ctx.lineTo(x-6,y-15);ctx.lineTo(x-2,y-12);ctx.lineTo(x,y-16);ctx.lineTo(x+3,y-12);ctx.lineTo(x+6,y-15);ctx.lineTo(x+6,y-9);ctx.closePath();ctx.stroke();}
       if(c.port){ctx.strokeStyle='#263a35';ctx.beginPath();ctx.arc(x+9,y+2,4,0,Math.PI);ctx.moveTo(x+9,y-4);ctx.lineTo(x+9,y+6);ctx.stroke();}
-      if(!active&&drawn.some(d=>Math.abs(d.x-x)<90&&Math.abs(d.y-y)<35))continue;
+      if(!active&&!capital&&camera.current.zoom<1.5)continue;
+      if(!active&&drawn.some(d=>Math.abs(d.x-x)<110&&Math.abs(d.y-y)<40))continue;
       drawn.push({x,y});ctx.font=`${active?'600':'500'} 12px ${font}`;ctx.textAlign='center';
       const text=c.name,tw=ctx.measureText(text).width;
       ctx.fillStyle=active?'#19241f':'rgba(234,224,198,.94)';ctx.fillRect(x-tw/2-6,y+8,tw+12,21);
