@@ -1,0 +1,7 @@
+{
+  "name": "yagizfront", "version": "0.1.0", "private": true,
+  "license": "AGPL-3.0-only", "engines": { "node": ">=24" },
+  "scripts": { "dev": "next dev", "build": "next build", "start": "next start", "typecheck": "tsc --noEmit", "test": "vitest run", "db:check": "node --env-file=.env.local scripts/check-db.mjs" },
+  "dependencies": { "next": "16.4.6", "react": "19.3.1", "react-dom": "19.3.1", "pg": "8.23.0", "@phosphor-icons/react": "^2.1.10", "geist": "^1.7.0" },
+  "devDependencies": { "typescript": "^5.9.3", "@types/node": "^24.0.0", "@types/react": "^19.0.0", "@types/react-dom": "^19.0.0", "@types/pg": "^8.15.5", "vitest": "^4.0.0", "tailwindcss": "^4.3.3", "@tailwindcss/postcss": "^4.3.3" }
+}

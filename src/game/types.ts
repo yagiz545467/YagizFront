@@ -1,0 +1,14 @@
+import type { TACTICS } from './balance';
+export type Tactic = keyof typeof TACTICS;
+export type Terrain = 'plain' | 'forest' | 'mountain';
+export type City = { id: number; name: string; x: number; y: number; tile: number; terrain: Terrain; coastal: boolean; owner: string | null; troops: number; level: number; port: boolean; lab: boolean; ships: number; fatigue: number; morale: number; fallout: boolean };
+export type World = { width: number; height: number; land: number[]; regions: number[]; cities: City[]; links: [number, number][] };
+export type PersonalEvent = { id: string; kind: 'visitor' | 'marriage' | 'harvest' | 'claim'; title: string; text: string; threat: boolean; agent?: string; investigated?: boolean; created: number };
+export type Player = { id: string; name: string; color: string; ready: boolean; gold: number; capital: number | null; ruler: string; generation: number; married: boolean; children: string[]; alive: boolean; exile: string | null; seekingAsylum: boolean; security: number; research: number; tech: number; atomic: boolean; visits: number; events: PersonalEvent[]; reports: string[] };
+export type Battle = { id: string; attacker: string; defender: string | null; from: number; to: number; troops: number; tactic: Tactic; defense?: Tactic; stage: 'defend' | 'pursue'; naval: boolean };
+export type Mission = { id: string; actor: string; target: string; kind: 'intel' | 'sabotage' | 'assassinate'; due: number };
+export type Treaty = { id: string; from: string; to: string; kind: 'trade' | 'asylum'; accepted: boolean };
+export type Room = { schema: 1; code: string; host: string; phase: 'lobby' | 'draft' | 'capital' | 'playing' | 'finished'; version: number; seed: number; rng: number; players: Player[]; world: World; draft: string[]; draftIndex: number; active: number; round: number; actions: number; battle: Battle | null; missions: Mission[]; treaties: Treaty[]; log: { id: number; text: string }[]; winner: string | null; commands: string[]; createdAt: string };
+export type Command = { type: string; city?: number; to?: number; target?: string; amount?: number; tactic?: Tactic; kind?: string; id?: string; choice?: string };
+export type PublicPlayer = Omit<Player, 'gold' | 'research' | 'atomic' | 'events' | 'reports' | 'security'> & Partial<Pick<Player, 'gold' | 'research' | 'atomic' | 'events' | 'reports' | 'security'>>;
+export type View = Omit<Room, 'rng' | 'seed' | 'commands' | 'missions' | 'players' | 'battle'> & { me: string; players: PublicPlayer[]; missions: Mission[]; battle: (Omit<Battle, 'tactic' | 'defense'> & { tactic?: Tactic; defense?: Tactic }) | null };

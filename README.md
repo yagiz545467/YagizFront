@@ -77,4 +77,3 @@ npm run db:check
 GNU AGPL v3. OpenFrontIO'dan uyarlanan komşuluk algoritması için © OpenFront and Contributors atfı korunur. OpenFront'un özel lisanslı görselleri kullanılmaz. Ayrıntılar: [LICENSE](LICENSE), [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 Arayüz, Taste frontend v1 ve Impeccable yönergeleriyle, özgün mürekkep/parşömen yaklaşımında hazırlanmıştır.
-

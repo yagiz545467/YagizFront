@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-26T00:00:00Z",
+  "title": "Design System: YağızFront",
+  "extensions": {
+    "shadows": [{"name":"mobile-sheet","value":"0 -12px 35px #17241a44","purpose":"Separate the open management sheet from the map."}],
+    "motion": [
+      {"name":"button-state","value":"180ms ease","purpose":"Background, color and press transitions."},
+      {"name":"sheet-enter","value":"250ms cubic-bezier(.16,1,.3,1)","purpose":"Mobile management sheet entrance; disabled with prefers-reduced-motion."}
+    ],
+    "breakpoints": [
+      {"name":"mobile-max","value":"700px"},
+      {"name":"compact-max","value":"900px"},
+      {"name":"wide-min","value":"1500px"}
+    ],
+    "review": {"capture":".impeccable/review/desktop.jpg","width":718,"height":730,"mobileVisualVerification":false,"source":"src/app/globals.css"}
+  },
+  "components": [
+    {
+      "name":"Primary button","kind":"button","refersTo":"button-primary","description":"Brass primary action.",
+      "html":"<button class=\"ds-primary\">Turu bitir</button>",
+      "css":".ds-primary{font:550 14px Geist,sans-serif;min-height:44px;padding:10px 15px;border:1px solid var(--brass,#d0ae76);border-radius:7px;background:var(--brass,#d0ae76);color:#24291f;cursor:pointer;transition:background .18s ease,transform .18s ease}.ds-primary:hover{background:#e0c18b;border-color:#e0c18b}.ds-primary:active{transform:scale(.98)}.ds-primary:focus-visible{outline:2px solid var(--brass,#d0ae76);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
+    },
+    {
+      "name":"Secondary button","kind":"button","description":"Outlined contextual action.",
+      "html":"<button class=\"ds-secondary\">Şehirler</button>",
+      "css":".ds-secondary{font:550 14px Geist,sans-serif;min-height:44px;padding:10px 15px;border:1px solid var(--line,#414c40);border-radius:7px;background:transparent;color:var(--paper,#eee5d1);cursor:pointer;transition:background .18s ease,transform .18s ease}.ds-secondary:hover{background:#344034;border-color:#6a755d}.ds-secondary:active{transform:scale(.98)}.ds-secondary:focus-visible{outline:2px solid var(--brass,#d0ae76);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none}}"
+    },
+    {
+      "name":"Text field","kind":"input","refersTo":"input","description":"Inset dark field with visible focus.",
+      "html":"<input class=\"ds-input\" aria-label=\"Oda kodu\" placeholder=\"Oda kodu\">",
+      "css":".ds-input{font:16px Geist,sans-serif;min-height:48px;border:1px solid var(--line,#414c40);border-radius:6px;background:#1d251f;color:var(--paper,#eee5d1);padding:11px 13px;caret-color:var(--brass,#d0ae76)}.ds-input::placeholder{color:#9ba38f}.ds-input:focus-visible{outline:2px solid var(--brass,#d0ae76);outline-offset:4px}"
+    },
+    {
+      "name":"Navigation","kind":"nav","description":"Brass current item and top indicator.",
+      "html":"<nav class=\"ds-nav\" aria-label=\"Yönetim\"><button aria-current=\"page\">Şehirler</button><button>Ordu</button><button>Hanedan</button><button>Bilim</button></nav>",
+      "css":".ds-nav{display:flex;background:var(--ink,#191f1d);border-top:1px solid var(--line,#414c40);height:68px}.ds-nav button{position:relative;font:14px Geist,sans-serif;border:0;background:transparent;color:var(--muted,#b5bcac);padding:10px 15px;cursor:pointer}.ds-nav button[aria-current]{color:var(--brass,#d0ae76);background:#242c24}.ds-nav button[aria-current]:after{content:'';position:absolute;top:0;left:calc(50% - 15px);width:30px;height:2px;background:var(--brass,#d0ae76)}.ds-nav button:hover{background:#344034}.ds-nav button:focus-visible{outline:2px solid var(--brass,#d0ae76);outline-offset:4px}"
+    },
+    {
+      "name":"Notice","kind":"card","description":"Tonal explanatory container.",
+      "html":"<aside class=\"ds-notice\"><h3>Hanedan</h3><p>Hanedanınızın durumunu buradan takip edin.</p></aside>",
+      "css":".ds-notice{font:14px/1.7 Geist,sans-serif;padding:18px;border-radius:9px;background:var(--surface,#232c27);color:var(--paper,#eee5d1)}.ds-notice h3{font-size:16px;margin:0 0 12px}.ds-notice p{margin:0;color:var(--muted,#b5bcac)}"
+    }
+  ],
+  "narrative": {
+    "northStar":"The Strategic Atlas",
+    "overview":"An ink-and-parchment atlas with restrained brass actions and a dynasty crest. The implemented interface uses compact Turkish controls, flat divided rows and a dominant map. User direction is code-first; image generation was cancelled.",
+    "keyCharacteristics":["Dark tonal surfaces and parchment text.","Brass selected states and primary actions.","Compact management rows around a canvas atlas."],
+    "rules":[],
+    "dos":["Do reuse the implemented semantic colors and visible focus treatment.","Do pair territorial colors with labels.","Do respect reduced motion and mobile safe areas."],
+    "donts":["Don't replace the atlas identity with neon, glass effects or ornamental fantasy frames.","Don't describe untested mobile layouts as visually verified."]
+  }
+}
