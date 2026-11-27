@@ -1,3 +1,4 @@
+import { newRealtimeRoom } from '@/game/realtime';
 import { randomBytes } from 'node:crypto';
 import { createRoom,joinRoom,viewFor } from '@/game/engine';
 import type { Room } from '@/game/types';
@@ -11,6 +12,6 @@ export async function POST(req:Request) { try {
   if(b.code) { const code=String(b.code).trim().toUpperCase(); if(!/^[A-F0-9]{6}$/.test(code)) throw new HttpError(400,'Oda kodu 6 karakter olmalı.');
     const record=await get<Room>(`room:${code}`); if(!record) throw new HttpError(404,'Bu kodda bir oda yok.');
     room=await update(`room:${code}`,record.value,r=>{ const before=r.players.length; joinRoom(r,s.id,s.name); if(r.players.length!==before) r.version++; return r; });
-  } else { let created:Room|null=null; for(let i=0;i<5;i++) { const code=randomBytes(3).toString('hex').toUpperCase(); const candidate=createRoom(code,s.id,s.name,randomBytes(4).readUInt32LE()); if(await insert(`room:${code}`,candidate)) { created=candidate; break; } } if(!created) throw new HttpError(503,'Oda oluşturulamadı. Tekrar dene.'); room=created; }
+  } else { let created:Room|null=null; for(let i=0;i<5;i++) { const code=randomBytes(3).toString('hex').toUpperCase(); const candidate=newRealtimeRoom(code,s.id,s.name,randomBytes(4).readUInt32LE()); if(await insert(`room:${code}`,candidate)) { created=candidate; break; } } if(!created) throw new HttpError(503,'Oda oluşturulamadı. Tekrar dene.'); room=created; }
   await update<string[]>(`rooms:${s.id}`,[],codes=>[room.code,...codes.filter(c=>c!==room.code)].slice(0,50)); return json({room:viewFor(room,s.id)});
 } catch(e) { return error(e); } }

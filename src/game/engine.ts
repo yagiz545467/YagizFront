@@ -25,7 +25,7 @@ function city(r: Room, id?: number) { need(Number.isInteger(id),'Bir şehir seç
 function mine(r: Room, p: Player, id?: number) { const c = city(r,id); need(c.owner===p.id,'Bu şehir sana ait değil.'); need(!c.fallout,'Bu bölge nükleer serpinti altında.'); return c; }
 function pay(p: Player, amount: number) { need(p.gold>=amount,`Bu işlem için ${amount} altın gerekiyor.`); p.gold -= amount; }
 function action(r: Room, p: Player) { need(r.phase==='playing','Maç henüz başlamadı.'); need(p.alive,'Hanedanın elendi.'); need(r.players[r.active]?.id===p.id,'Şu an başka bir oyuncunun sırası.'); need(!r.battle,'Önce devam eden savaşı sonuçlandırın.'); need(!p.seekingAsylum,'Önce sığınma taleplerinin yanıtını bekle.'); need(r.actions>0,'Eylem hakkın kalmadı. Turunu bitirebilirsin.'); r.actions--; }
-function winner(r: Room) {
+export function winner(r: Room) {
   const alive = r.players.filter(p=>p.alive);
   if (alive.length<=1 && r.phase==='playing') { r.phase='finished'; r.winner=alive[0]?.id ?? null; r.battle=null; log(r,alive[0] ? `${alive[0].name} hanedanı kazandı.` : 'Hayatta kalan hanedan yok.'); }
 }
@@ -48,7 +48,7 @@ export function rulerDies(r: Room, p: Player) {
     p.children.pop(); log(r,`${c.name}, taht kavgasında bağımsızlığını ilan etti.`);
   }
 }
-function seekAsylum(r: Room, p: Player) {
+export function seekAsylum(r: Room, p: Player) {
   if(!p.alive || owned(r,p.id).length || p.exile) return;
   p.capital=null; p.seekingAsylum=true;
   r.treaties=r.treaties.filter(t=>!(t.kind==='asylum' && t.from===p.id));
@@ -56,7 +56,7 @@ function seekAsylum(r: Room, p: Player) {
   if(!r.treaties.some(t=>t.kind==='asylum' && t.from===p.id)) eliminate(r,p);
   else log(r,`${p.name} hanedanı sığınacak bir ülke arıyor.`);
 }
-function capture(r: Room, c: City, p: Player, troops: number) {
+export function capture(r: Room, c: City, p: Player, troops: number) {
   const old=c.owner ? player(r,c.owner) : null;
   c.owner=p.id; c.troops=Math.max(1,troops); c.fatigue=B.battleFatigue; c.morale=80;
   p.exile=null; p.seekingAsylum=false; r.treaties=r.treaties.filter(t=>!(t.kind==='asylum' && t.from===p.id));
@@ -76,9 +76,9 @@ function addEvent(r: Room,p: Player,kind: PersonalEvent['kind'],agent?: string) 
     harvest: ['Bereketli bir mevsim','Ambarlar doldu. Fazlayı pazarda satabilir veya halkına dağıtabilirsin.'],
     claim: ['Tahta uzanan gölge','Hanedan içinden biri tahtta hak iddia ediyor. Uzlaşmak altın, direnmek asker gerektirecek.'],
   }[kind];
-  p.events.push({id:`event-${p.id}-${r.version}-${p.visits}-${p.events.length}`,kind,title:details[0],text:details[1],threat:!!agent || ((kind==='visitor'||kind==='marriage') && roll(r)<B.visitorRisk),agent,created:r.round});
+  p.events.push({id:`event-${p.id}-${r.version}-${p.visits}-${p.events.length}`,kind,title:details[0],text:details[1],threat:!!agent || ((kind==='visitor'||kind==='marriage') && roll(r)<(r.schema===2?.5:B.visitorRisk)),agent,created:r.round});
 }
-function beginTurn(r: Room,p: Player) {
+export function beginTurn(r: Room,p: Player) {
   r.actions=B.actions; p.visits++;
   const cities=owned(r,p.id).filter(c=>!c.fallout);
   p.gold+=cities.reduce((s,c)=>s+B.income*c.level,0) * (p.tech>=1 ? 1.2:1);
@@ -229,6 +229,7 @@ export function applyCommand(original: Room, actor: string, commandId: string, e
 export function viewFor(r: Room,id: string): View {
   need(r.players.some(p=>p.id===id),'Bu odanın oyuncusu değilsin.');
   const {rng: _rng,seed: _seed,commands: _commands,missions,players,battle,...rest}=structuredClone(r);
+  if(rest.sim)for(const army of rest.sim.armies)if(army.owner!==id){army.path=[];delete army.tactic;}
   return {...rest,me:id,players:players.map(p=>{
     const {gold,research,atomic,events,reports,security,...pub}=p;
     return p.id===id ? {...pub,gold,research,atomic,reports,security,events:events.map(e=>({...e,threat:e.investigated?e.threat:false,agent:undefined}))} : pub;

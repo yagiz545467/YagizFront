@@ -21,4 +21,7 @@ Original dark-ink/parchment identity, Turkish UI, map-first screen, touch pan/zo
 User subsequently cancelled image generation and explicitly requested direct implementation. Vercel deployment is owned by the user; deliver a new GitHub repository with source pushed.
 
 ## Assumptions to tune through playtesting
+
+## v2 feedback, 2026-11-27
+User replaces turn-based play with mobile armies, dynamic tile ownership, larger random continents separated by seas, more buildings, 50% visitor threat without investigation, and consequential action confirmations. Simulation pauses when any living player is offline; no offline catch-up. Old schema-1 games remain supported; new rooms use schema 2. Initial city drafting stays ordered; active play has no turn/action cap.
 Exact initial gold/troop quantities, building costs, tactical multipliers and event odds remain balance parameters rather than hard-coded UI promises. Mockup figures illustrate a hypothetical game, not live data.

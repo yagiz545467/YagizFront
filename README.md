@@ -1,6 +1,20 @@
 # YağızFront
 
-Telefon öncelikli, 2–8 kişilik, sıra tabanlı hanedan strateji oyunu. Rastgele haritada dört şehir seç; başkentini kur, limanlarla ticaret yap, gizli taktiklerle savaş ve hanedanını yaşat.
+Telefon öncelikli, 2–8 kişilik hanedan strateji oyunu. Yeni odalar v2 gerçek zamanlı kurallarla açılır. Önceki sıra tabanlı maçlar kendi kurallarıyla korunur.
+
+## v2: hareketli ordular ve dinamik sınırlar
+
+- Her yeni maçta 240×160 hücreli, denizlerle ayrılan rastgele kıtalar oluşur. Harita maç boyunca değişmez. Şehirler nokta olarak kalır; önceden çizilmiş eyalet sınırları yoktur.
+- Başlangıçtaki dört şehir dönüşümlü seçilir. Başkentler seçildikten sonra tur sırası ve üç eylem sınırı kalkar; herkes aynı anda emir verebilir.
+- Tüm yaşayan oyuncuların oyun ekranı açıkken simülasyon ilerler. Bir oyuncu sekmeyi gizlerse durur. Beklenmedik bağlantı kopması en geç 8 saniyelik bağlantı süresi sonunda anlaşılır. Geri dönüşte çevrim dışı geçen süre telafi edilmez. Oda sahibi ayrıca duraklatabilir.
+- Haritada kendi sınırına bitişik sahipsiz kara seçip **Genişle** ile toprak kazan. Şehirlerin bulunduğu noktalar satın alınamaz; kuşatmayla ele geçirilir.
+- Şehir garnizonundan ordu kur, ordunu seç, haritada hedef belirle ve yürüyüş emrini onayla. Ordu saniyede bir hücre ilerler. Düşman ordularıyla karşılaşınca çatışır, hedef şehirde kuşatma yapar. **Dur ve savun** emri yürüyüşü keser; başka hedef vererek geri çekilebilirsin.
+- Deniz geçişi için liman, tersane ve gemi gerekir. Ordunun gemi kapasitesi asker sayısını karşılamalıdır. Rotalar sunucuda hesaplanır; düşman yürüyüş hedefleri ve taktikleri gizlidir.
+- Kışla, çiftlik, pazar, sur ve tersane eklendi. Üretim ve araştırma yalnızca aktif oyun süresinde, 30 saniyede bir ilerler.
+- Rastgele ziyaretçi/evlilik teklifinde casus olma ihtimali %50'dir. Casus olmayan teklif fayda sağlar. Oyuncunun gönderdiği suikastçı ayrı bir gizli görevdir; güvenlik ve suikast başarı ihtimalleri geçerlidir. Araştırma düğmesi v2'de kaldırıldı.
+- Kaynak harcayan ve sonucu olan işlemler **Emin misin?** onayı ister. Haritada gezinme, panel açma ve seçim işlemleri onaysızdır.
+
+Yeni kuralları görmek için **yeni oda kur**. Eski kayıtlar otomatik dönüştürülmez. Yeni motor `src/game/realtime.ts`, harita üretimi `src/game/continents.ts` içindedir.
 
 ## Vercel'e kurulum
 
@@ -36,7 +50,7 @@ npm run dev
 
 `http://localhost:3000` adresini aç. İki ayrı tarayıcı profili/cihazla giriş yaparak aynı oda koduna katıl. Her oyuncu kendisine verilen **kişisel kurtarma kodunu saklamalıdır**. Ortak giriş şifresi eski hanedanı kurtarmaz; kurtarma kodu eski kimliği geri getirir. Sayfa kapansa veya bağlantı kesilse de oda kaydı korunur.
 
-## Oynanış
+## Eski kayıtlar: v1 oynanışı
 
 - Oda sahibi, en az iki oyuncu hazır olduğunda oyunu başlatır. Dört şehir dönüşümlü, yılan sırasıyla seçilir. Her oyuncu kendi şehirlerinden birini başkent yapar.
 - Her tur üç ana eylem vardır. Tur başında şehir geliri, asker üretimi, araştırma ve zamanı gelen casus görevleri işlenir. Maç veya tur zaman aşımı yoktur.
@@ -77,3 +91,5 @@ npm run db:check
 GNU AGPL v3. OpenFrontIO'dan uyarlanan komşuluk algoritması için © OpenFront and Contributors atfı korunur. OpenFront'un özel lisanslı görselleri kullanılmaz. Ayrıntılar: [LICENSE](LICENSE), [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 Arayüz, Taste frontend v1 ve Impeccable yönergeleriyle, özgün mürekkep/parşömen yaklaşımında hazırlanmıştır.
+
+World map update: new matches use the actual OpenFront World geography (516 × 258), with randomized city placement. Untouched v2 lobbies are upgraded automatically; matches already underway keep their saved terrain. The map data is CC BY-SA 4.0; see THIRD_PARTY_NOTICES.md.
